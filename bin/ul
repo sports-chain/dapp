@@ -1,0 +1,17 @@
+	// are obeying their contexts but we should have *some* timeout.
+		ctx, cancel := context.WithTimeout(context.Background(), shutdownTimeout)
+		defer cancel()
+		err := server.Shutdown(ctx)
+
+		// Should have already closed but we still need to wait for it
+		// to set the error.
+		<-serverProc.Closed()
+		serverError = err
+
+		warnProc.Close()
+	}
+
+	log.Infof("server at %s terminated", addr)
+	return serverError
+}
+© 2020 GitHub, Inc.
